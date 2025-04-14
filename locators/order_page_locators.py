@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 
+
 class OrderPageLocators: # локаторы для элементов страницы оформления заказа
     # кнопки заказа
     ORDER_BUTTON_TOP = (By.XPATH, "(//button[contains(text(), 'Заказать')])[1]") # верхняя кнопка "Заказать" на странице
@@ -32,3 +33,5 @@ class OrderPageLocators: # локаторы для элементов стран
     ORDER_BUTTON = (By.XPATH, "(//button[contains(text(), 'Заказать')])[2]")  # кнопка "Заказать" на форме "Про аренду"
     CONFIRM_BUTTON = (By.XPATH, "//button[text()='Да']") # Кнопка подтверждения в модальном окне
     SUCCESS_MODAL = (By.XPATH, "//div[contains(text(), 'Заказ оформлен')]") # модальное окно с подтверждением заказа
+
+    MODAL_OVERLAY = (By.XPATH, "//div[contains(@class, 'spinner')]")  # локатор спиннера

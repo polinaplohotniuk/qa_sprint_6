@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+
 class BasePage:  # базовый класс страницы, содержащий общие методы
     def __init__(self, driver: WebDriver): # инициализация базовой страницы
         self.driver = driver

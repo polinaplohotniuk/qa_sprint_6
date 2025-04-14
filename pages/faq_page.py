@@ -7,14 +7,14 @@ from pages.base_page import BasePage
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException
 
 
-class FaqPage(BasePage):  # класс для раздела "Вопросы и ответы" на главной странице, наследуется от базового
+class FaqPage(BasePage):  # класс для раздела "Вопросы о важном" на главной странице, наследуется от базового
 
-    def __init__(self, driver: WebDriver): # инициализация главной страницы
+    def __init__(self, driver: WebDriver):  # инициализация главной страницы
         super().__init__(driver)  # вызов конструктора родительского класса BasePage
         self.wait = WebDriverWait(driver, 10)
 
     @allure.step("Клик на вопрос: {question_locator}")
-    def click_question(self, question_locator): # клик на вопрос в разделе "Вопросы и ответы"
+    def click_question(self, question_locator):  # клик на вопрос в разделе "Вопросы о важном"
         max_attempts = 3  # максимальное количество попыток клика
         for attempt in range(max_attempts):
             try:
@@ -23,13 +23,8 @@ class FaqPage(BasePage):  # класс для раздела "Вопросы и 
 
                     # прокрутка к элементу с использованием Selenium
                     self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", question)
+                    question.click() # Клик на элемент
 
-                    # проверка, что элемент не перекрыт
-                    if not self._is_element_clickable(question):
-                        raise ElementClickInterceptedException("Вопрос перекрыт другим элементом")
-
-                    # клик с использованием JavaScript
-                    self.driver.execute_script("arguments[0].click();", question)
                     return self  # клик успешен, выход из цикла
 
             except (TimeoutException, ElementClickInterceptedException) as e:
@@ -41,18 +36,6 @@ class FaqPage(BasePage):  # класс для раздела "Вопросы и 
         return self
 
     @allure.step("Получение текста ответа: {answer_locator}")
-    def get_answer_text(self, answer_locator): # возвращает текст ответа на вопрос
+    def get_answer_text(self, answer_locator):  # возвращает текст ответа на вопрос
         answer = self.wait.until(EC.visibility_of_element_located(answer_locator))
         return answer.text
-
-    def _is_element_clickable(self, element):
-        """Проверяет, что элемент не перекрыт другим элементом."""
-        js_code = """
-        function isClickable(element) {
-            var rect = element.getBoundingClientRect();
-            var elementAtPoint = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-            return elementAtPoint === element;
-        }
-        return isClickable(arguments[0]);
-        """
-        return self.driver.execute_script(js_code, element)

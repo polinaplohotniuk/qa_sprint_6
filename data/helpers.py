@@ -6,7 +6,7 @@ def get_personal_data():
     return (
         fake.first_name(),
         fake.last_name(),
-        fake.city(),  # Только город
+        fake.city(),  # только город
         fake.numerify('+7##########')
     )
 
